@@ -1,0 +1,31 @@
+{
+    "cSpell.words": [
+        "catboost",
+        "citeproc",
+        "cudnn",
+        "devel",
+        "glmnet",
+        "glpk",
+        "imagemagick",
+        "keras",
+        "libcurl",
+        "libssl",
+        "libxt",
+        "localtime",
+        "multiarch",
+        "noninteractive",
+        "ompr",
+        "optim",
+        "pandoc",
+        "quadprog",
+        "rstudio",
+        "symlink",
+        "tidymodels",
+        "tidytext",
+        "timeseries",
+        "tzdata",
+        "virtualenv",
+        "xgboost",
+        "zoneinfo"
+    ]
+}
