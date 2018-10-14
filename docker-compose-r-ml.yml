@@ -1,16 +1,17 @@
 version: "2.3"
 
-r-ml:
-    build:
-        context: .
-        dockerfile: Dockerfile-r-ml
-        target: r-ml
-    image: landeranalytics/r-ml
-    container_name: r-ml
-    tty: true
-    stdin_open: true
-    runtime: nvidia
-    ports:
-        - "8787:8787"
-    environment:
-        - PASSWORD=badpassword
+services:
+    r-ml:
+        build:
+            context: .
+            dockerfile: Dockerfile-r-ml
+            target: r-ml
+        image: landeranalytics/r-ml
+        container_name: r-ml
+        tty: true
+        stdin_open: true
+        runtime: nvidia
+        ports:
+            - "8787:8787"
+        environment:
+            - PASSWORD=badpassword
