@@ -1,0 +1,14 @@
+FROM rstudio as r-ml
+
+COPY --from=r-tidyverse /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-stan /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-tensorflow /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-tidymodels /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-timeseries /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-xgboost /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-catboost /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-glmnet /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-tidytext /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-network /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-optim /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-extras /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
