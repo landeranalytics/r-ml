@@ -71,7 +71,8 @@ RUN apt-get update \
     python-pip \
     libpython2.7 \
     && pip install --upgrade pip
-RUN pip install virtualenv \ 
+RUN pip install virtualenv \
+    && pip install --upgrade setuptools \
     && pip install --upgrade tensorflow-gpu keras scipy h5py pyyaml requests Pillow
 
 # install the tensorflow package and then use that to install keras

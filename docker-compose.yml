@@ -86,8 +86,8 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-tidytext
-        image: landeranalytics/r-tidytext
-        container_name: r-tidytext
+        image: r-tidytext
+        container_name: landeranalytics/r-tidytext
         tty: true
         stdin_open: true
         runtime: nvidia
@@ -105,8 +105,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-            target: landeranalytics/r-optim
-        image: r-optim
+            target: r-optim
+        image: landeranalytics/r-optim
         container_name: r-optim
         tty: true
         stdin_open: true
