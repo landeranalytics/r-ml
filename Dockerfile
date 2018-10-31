@@ -147,7 +147,7 @@ RUN R -e "install.packages(c('ROI', 'ROI.plugin.glpk', 'ompr', 'ompr.roi', 'quad
 ######################################
 FROM r-basics as r-extras
 
-RUN R -e "install.packages(c('coefplot', 'dygraph', 'threejs', 'leaflet', 'flexdashboard', 'crosstalk'))"
+RUN R -e "install.packages(c('coefplot', 'dygraph', 'here', 'threejs', 'leaflet', 'leaflet.extras', 'flexdashboard', 'crosstalk'))"
 
 ######################################
 ## RStudio
