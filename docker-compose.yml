@@ -11,16 +11,6 @@ services:
         tty: true
         stdin_open: true
         runtime: nvidia
-    r-tensorflow:
-        build:
-            context: .
-            dockerfile: Dockerfile
-            target: r-tensorflow
-        image: landeranalytics/r-tensorflow
-        container_name: r-tensorflow
-        tty: true
-        stdin_open: true
-        runtime: nvidia
     r-xgboost:
         build:
             context: .

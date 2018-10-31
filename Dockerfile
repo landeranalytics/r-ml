@@ -1,7 +1,7 @@
 ######################################
 ## r-base
 ######################################
-FROM nvidia/cuda:9.2-cudnn7-devel-ubuntu18.04 as r-basics
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04 as r-basics
 
 # https://hub.docker.com/r/nvidia/cuda/
 
@@ -10,10 +10,10 @@ LABEL maintainer="Jared P. Lander <packages@jaredlander.com>"
 ARG R_VERSION
 ARG BUILD_DATE
 ENV DEBIAN_FRONTEND=noninteractive \
-    R_VERSION=${R_VERSION:-3.5.1-1bionic}
+    R_VERSION=${R_VERSION:-3.5.1-1xenial}
 
 ## Prepare R installation from 
-RUN sh -c 'echo "deb http://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/" >> /etc/apt/sources.list' \
+RUN sh -c 'echo "deb http://cloud.r-project.org/bin/linux/ubuntu xenial-cran35/" >> /etc/apt/sources.list' \
     && gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 \
     && gpg -a --export E084DAB9 | apt-key add - \
     # install needed linux libraries
@@ -36,8 +36,8 @@ RUN sh -c 'echo "deb http://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/"
     && apt-get update \
     && apt-get upgrade -y -q \
     && apt-get install -y --no-install-recommends \
-    r-base=3.5.1-1bionic \
-    r-base-dev=3.5.1-1bionic
+    r-base=3.5.1-1xenial \
+    r-base-dev=3.5.1-1xenial
 
 ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
@@ -58,26 +58,6 @@ RUN R -e "install.packages('tidyverse')"
 FROM r-basics as r-stan
 
 RUN R -e "install.packages('rstanarm', repos = 'https://cloud.r-project.org/', dependencies=TRUE)"
-
-######################################
-## Tensorflow
-######################################
-FROM r-basics as r-tensorflow
-
-# install pip and then install virtualenv from pip then tensorflow related stuff
-RUN apt-get update \
-    && apt-get upgrade -y -q \
-    && apt-get install -y --no-install-recommends \
-    python-pip \
-    libpython2.7 \
-    && pip install --upgrade pip
-RUN pip install virtualenv \
-    && pip install --upgrade setuptools \
-    && pip install --upgrade tensorflow-gpu keras scipy h5py pyyaml requests Pillow
-
-# install the tensorflow package and then use that to install keras
-RUN R -e "install.packages(c('tensorflow', 'keras'))" 
-#-e "keras::install_keras(tensorflow = 'gpu')"
 
 ######################################
 ## Tidymodels
@@ -263,7 +243,6 @@ FROM rstudio as r-ml
 
 COPY --from=r-tidyverse /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
 COPY --from=r-stan /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-tensorflow /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
 COPY --from=r-tidymodels /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
 COPY --from=r-timeseries /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
 COPY --from=r-xgboost /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
@@ -273,3 +252,24 @@ COPY --from=r-tidytext /usr/local/lib/R/site-library/ /usr/local/lib/R/site-libr
 COPY --from=r-network /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
 COPY --from=r-optim /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
 COPY --from=r-extras /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+
+######################################
+## Tensorflow
+######################################
+# This must be installed on top of the r-ml image because the underlying libraries
+# (TensorFlow, Keras) must onto the image.
+
+# install pip and then install virtualenv from pip then tensorflow related stuff
+RUN apt-get update \
+    && apt-get upgrade -y -q \
+    && apt-get install -y --no-install-recommends \
+    python-pip \
+    libpython2.7 \
+    && pip install --upgrade pip \
+    && hash -r \
+    && pip install virtualenv \
+    && pip install --upgrade setuptools \
+    && pip install --upgrade tensorflow-gpu keras scipy h5py pyyaml requests Pillow \
+    # install the tensorflow package and then use that to install keras
+    && R -e "install.packages(c('tensorflow', 'keras'))" 
+#-e "keras::install_keras(tensorflow = 'gpu')"
