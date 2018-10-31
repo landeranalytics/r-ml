@@ -6,7 +6,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-basics
-        image: r-base
+        image: landeranalytics/r-base
         container_name: r-basic
         tty: true
         stdin_open: true
@@ -16,7 +16,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-tensorflow
-        image: r-tensorflow
+        image: landeranalytics/r-tensorflow
         container_name: r-tensorflow
         tty: true
         stdin_open: true
@@ -26,7 +26,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-xgboost
-        image: r-xgboost
+        image: landeranalytics/r-xgboost
         container_name: r-xgboost
         tty: true
         stdin_open: true
@@ -36,7 +36,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-catboost
-        image: r-catboost
+        image: landeranalytics/r-catboost
         container_name: r-catboost
         tty: true
         stdin_open: true
@@ -46,7 +46,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-tidyverse
-        image: r-tidyverse
+        image: landeranalytics/r-tidyverse
         container_name: r-tidyverse
         tty: true
         stdin_open: true
@@ -56,7 +56,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-tidymodels
-        image: r-tidymodels
+        image: landeranalytics/r-tidymodels
         container_name: r-tidymodels
         tty: true
         stdin_open: true
@@ -66,7 +66,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-timeseries
-        image: r-timeseries
+        image: landeranalytics/r-timeseries
         container_name: r-timeseries
         tty: true
         stdin_open: true
@@ -76,7 +76,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-glmnet
-        image: r-glmnet
+        image: landeranalytics/r-glmnet
         container_name: r-glmnet
         tty: true
         stdin_open: true
@@ -86,7 +86,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-tidytext
-        image: r-tidytext
+        image: landeranalytics/r-tidytext
         container_name: r-tidytext
         tty: true
         stdin_open: true
@@ -96,7 +96,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-network
-        image: r-network
+        image: landeranalytics/r-network
         container_name: r-network
         tty: true
         stdin_open: true
@@ -105,7 +105,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-            target: r-optim
+            target: landeranalytics/r-optim
         image: r-optim
         container_name: r-optim
         tty: true
@@ -116,7 +116,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-extras
-        image: r-extras
+        image: landeranalytics/r-extras
         container_name: r-extras
         tty: true
         stdin_open: true
@@ -126,7 +126,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-stan
-        image: r-stan
+        image: landeranalytics/r-stan
         container_name: r-stan
         tty: true
         stdin_open: true
@@ -136,7 +136,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: rstudio
-        image: rstudio
+        image: landeranalytics/rstudio
         container_name: rstudio
         tty: true
         stdin_open: true
