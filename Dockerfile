@@ -26,6 +26,8 @@ RUN sh -c 'echo "deb http://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/"
     libcurl4-openssl-dev \
     imagemagick \
     tzdata \
+    locales \
+    && locale-gen en_US.UTF-8 \
     # configure time zone
     && ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime \
     && dpkg-reconfigure --frontend noninteractive tzdata \
@@ -36,6 +38,10 @@ RUN sh -c 'echo "deb http://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/"
     && apt-get install -y --no-install-recommends \
     r-base=3.5.1-1bionic \
     r-base-dev=3.5.1-1bionic
+
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
 
 CMD [ "R" ]
 
@@ -58,16 +64,19 @@ RUN R -e "install.packages('rstanarm', repos = 'https://cloud.r-project.org/', d
 ######################################
 FROM r-basics as r-tensorflow
 
-# install pip and then install virtualenv from pip
+# install pip and then install virtualenv from pip then tensorflow related stuff
 RUN apt-get update \
     && apt-get upgrade -y -q \
     && apt-get install -y --no-install-recommends \
     python-pip \
+    libpython2.7 \
     && pip install --upgrade pip
-RUN pip install virtualenv
+RUN pip install virtualenv \ 
+    && pip install --upgrade tensorflow-gpu keras scipy h5py pyyaml requests Pillow
 
 # install the tensorflow package and then use that to install keras
-RUN R -e "install.packages(c('tensorflow', 'keras'))" -e "keras::install_keras(tensorflow = 'gpu')"
+RUN R -e "install.packages(c('tensorflow', 'keras'))" 
+#-e "keras::install_keras(tensorflow = 'gpu')"
 
 ######################################
 ## Tidymodels
@@ -147,7 +156,7 @@ RUN R -e "install.packages(c('ROI', 'ROI.plugin.glpk', 'ompr', 'ompr.roi', 'quad
 ######################################
 FROM r-basics as r-extras
 
-RUN R -e "install.packages(c('coefplot', 'dygraph', 'here', 'threejs', 'leaflet', 'leaflet.extras', 'flexdashboard', 'crosstalk'))"
+RUN R -e "install.packages(c('coefplot', 'dygraphs', 'here', 'threejs', 'leaflet', 'leaflet.extras', 'flexdashboard', 'crosstalk', 'DT'))"
 
 ######################################
 ## RStudio
