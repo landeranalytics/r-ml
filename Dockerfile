@@ -263,13 +263,12 @@ COPY --from=r-extras /usr/local/lib/R/site-library/ /usr/local/lib/R/site-librar
 RUN apt-get update \
     && apt-get upgrade -y -q \
     && apt-get install -y --no-install-recommends \
-    python-pip \
-    libpython2.7 \
-    && pip install --upgrade pip \
+    python3-dev \
+    python3-pip \
+    && pip3 install --upgrade pip \
     && hash -r \
-    && pip install virtualenv \
-    && pip install --upgrade setuptools \
-    && pip install --upgrade tensorflow-gpu keras scipy h5py pyyaml requests Pillow \
+    && pip3 install --upgrade setuptools \
+    && pip3 install --upgrade tensorflow-gpu keras \
     # install the tensorflow package and then use that to install keras
     && R -e "install.packages(c('tensorflow', 'keras'))" 
 #-e "keras::install_keras(tensorflow = 'gpu')"
