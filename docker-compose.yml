@@ -10,8 +10,6 @@ services:
         container_name: r-basic
         tty: true
         stdin_open: true
-        # args:
-        #     R_VERSION: 3.5.1-1bionic
         runtime: nvidia
     r-tensorflow:
         build:
