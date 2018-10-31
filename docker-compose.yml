@@ -154,7 +154,7 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-ml
-        image: r-ml
+        image: landeranalytics/r-ml
         container_name: r-ml
         tty: true
         stdin_open: true
