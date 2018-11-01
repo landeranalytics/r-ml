@@ -161,7 +161,7 @@ RUN R -e "install.packages(c('coefplot', 'dygraphs', 'here', 'threejs', 'leaflet
 ######################################
 ## ML
 ######################################
-FROM r-tensorflow as r-machinelearning
+FROM r-tensorflow as r-full
 
 COPY --from=r-tidyverse /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
 COPY --from=r-stan /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
@@ -179,7 +179,7 @@ COPY --from=r-extras /usr/local/lib/R/site-library/ /usr/local/lib/R/site-librar
 ######################################
 ## RStudio
 ######################################
-FROM r-machinelearning as r-ml
+FROM r-full as r-ml
 
 ARG RSTUDIO_VERSION
 ENV PATH=/usr/lib/rstudio-server/bin:$PATH
