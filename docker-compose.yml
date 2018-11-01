@@ -86,8 +86,8 @@ services:
             context: .
             dockerfile: Dockerfile
             target: r-tidytext
-        image: r-tidytext
-        container_name: landeranalytics/r-tidytext
+        image: landeranalytics/r-tidytext
+        container_name: r-tidytext
         tty: true
         stdin_open: true
         runtime: nvidia
