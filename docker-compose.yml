@@ -131,13 +131,13 @@ services:
         tty: true
         stdin_open: true
         runtime: nvidia
-    rstudio:
+    r-machinelearning:
         build:
             context: .
             dockerfile: Dockerfile
-            target: rstudio
-        image: landeranalytics/rstudio
-        container_name: rstudio
+            target: r-machinelearning
+        image: landeranalytics/r-machinelearning
+        container_name: r-machinelearning
         tty: true
         stdin_open: true
         runtime: nvidia

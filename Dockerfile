@@ -69,16 +69,14 @@ FROM r-basics as r-tensorflow
 RUN apt-get update \
     && apt-get upgrade -y -q \
     && apt-get install -y --no-install-recommends \
-    python-pip \
-    libpython2.7 \
-    && pip install --upgrade pip
-RUN pip install virtualenv \
-    && pip install --upgrade setuptools \
-    && pip install --upgrade tensorflow-gpu keras scipy h5py pyyaml requests Pillow
-
-# install the tensorflow package and then use that to install keras
-RUN R -e "install.packages(c('tensorflow', 'keras'))" 
-#-e "keras::install_keras(tensorflow = 'gpu')"
+    python3-dev \
+    python3-pip \
+    && pip3 install --upgrade pip \
+    && hash -r \
+    && pip3 install --upgrade setuptools \
+    && pip3 install --upgrade tensorflow-gpu keras \
+    # install the tensorflow package and then use that to install keras
+    && R -e "install.packages(c('tensorflow', 'keras'))" 
 
 ######################################
 ## Tidymodels
@@ -161,9 +159,27 @@ FROM r-basics as r-extras
 RUN R -e "install.packages(c('coefplot', 'dygraphs', 'here', 'threejs', 'leaflet', 'leaflet.extras', 'flexdashboard', 'crosstalk', 'DT'))"
 
 ######################################
+## ML
+######################################
+FROM r-tensorflow as r-machinelearning
+
+COPY --from=r-tidyverse /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-stan /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+# COPY --from=r-tensorflow /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-tidymodels /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-timeseries /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-xgboost /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-catboost /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-glmnet /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-tidytext /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-network /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-optim /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+COPY --from=r-extras /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
+
+######################################
 ## RStudio
 ######################################
-FROM r-basics as rstudio
+FROM r-machinelearning as r-ml
 
 ARG RSTUDIO_VERSION
 ENV PATH=/usr/lib/rstudio-server/bin:$PATH
@@ -256,21 +272,3 @@ RUN chown -R rstudio:rstudio /home/rstudio/.rstudio
 EXPOSE 8787
 
 CMD ["/init"]
-
-######################################
-## ML
-######################################
-FROM rstudio as r-ml
-
-COPY --from=r-tidyverse /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-stan /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-tensorflow /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-tidymodels /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-timeseries /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-xgboost /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-catboost /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-glmnet /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-tidytext /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-network /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-optim /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
-COPY --from=r-extras /usr/local/lib/R/site-library/ /usr/local/lib/R/site-library/
