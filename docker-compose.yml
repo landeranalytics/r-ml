@@ -131,13 +131,13 @@ services:
         tty: true
         stdin_open: true
         runtime: nvidia
-    rstudio:
+    r-full:
         build:
             context: .
             dockerfile: Dockerfile
-            target: rstudio
-        image: landeranalytics/rstudio
-        container_name: rstudio
+            target: r-full
+        image: landeranalytics/r-full
+        container_name: r-full
         tty: true
         stdin_open: true
         runtime: nvidia

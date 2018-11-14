@@ -66,7 +66,7 @@ if [ "$USERID" -ne 1000 ]
 elif [ "$USER" != "rstudio" ]
   then
     ## cannot move home folder when it's a shared volume, have to copy and change permissions instead
-    cp -r /home/rstudio /home/$USER
+    cp -r /home/rstudio/. /home/$USER/.
     ## RENAME the user
     usermod -l $USER -d /home/$USER rstudio
     groupmod -n $USER rstudio
