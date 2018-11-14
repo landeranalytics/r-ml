@@ -66,7 +66,7 @@ if [ "$USERID" -ne 1000 ]
 elif [ "$USER" != "rstudio" ]
   then
     ## cannot move home folder when it's a shared volume, have to copy and change permissions instead
-    cp -r /home/rstudio /home/$USER
+    cp -r /home/rstudio/. /home/$USER/.
     ## RENAME the user
     usermod -l $USER -d /home/$USER rstudio
     groupmod -n $USER rstudio
@@ -85,7 +85,8 @@ fi
 
 ## Add a password to user
 echo "$USER:$PASSWORD" | chpasswd
-cp /etc/skel/.rstudio/monitored/user-settings/user-settings /home/${USER}/.rstudio/monitored/user-settings/
+#mkdir -p /home/${USER}/.rstudio/monitored/user-settings
+#cp /etc/skel/.rstudio/monitored/user-settings/user-settings /home/${USER}/.rstudio/monitored/user-settings/user-settings
 
 # Use Env flag to know if user should be added to sudoers
 if [[ ${ROOT,,} == "true" ]]

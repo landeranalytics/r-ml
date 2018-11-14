@@ -265,7 +265,7 @@ COPY add_shiny.sh /etc/cont-init.d/add
 COPY pam-helper.sh /usr/lib/rstudio-server/bin/pam-helper
 
 COPY user-settings /home/rstudio/.rstudio/monitored/user-settings/
-COPY user-settings /etc/skel/.rstudio/monitored/user-settings/user-settings
+#COPY user-settings /etc/skel/.rstudio/monitored/user-settings/user-settings
 # No chown will cause "RStudio Initalization Error"
 # "Error occurred during the transmission"; RStudio will not load.
 RUN chown -R rstudio:rstudio /home/rstudio/.rstudio
