@@ -85,8 +85,6 @@ fi
 
 ## Add a password to user
 echo "$USER:$PASSWORD" | chpasswd
-#mkdir -p /home/${USER}/.rstudio/monitored/user-settings
-#cp /etc/skel/.rstudio/monitored/user-settings/user-settings /home/${USER}/.rstudio/monitored/user-settings/user-settings
 
 # Use Env flag to know if user should be added to sudoers
 if [[ ${ROOT,,} == "true" ]]
